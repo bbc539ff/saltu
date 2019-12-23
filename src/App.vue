@@ -1,36 +1,96 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <div>
-      <p>
-        If Element is successfully added to this project, you'll see an
-        <code v-text="'<el-button>'"></code>
-        below
-      </p>
-      <el-button>el-button</el-button>
-    </div>
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <el-row>
+      <el-col :span="5" class="left-containner border">
+        <div class>
+          <span class="logo">Saltu</span>
+          <el-input
+            class="search-input"
+            :model="input"
+            placeholder="请输入内容"
+            prefix-icon="el-icon-search"
+          ></el-input>
+          <i class="el-icon-s-home left-icon">主页</i>
+          <i class="el-icon-message-solid left-icon">通知</i>
+          <i class="el-icon-message left-icon">消息</i>
+          <i class="el-icon-star-on left-icon">收藏</i>
+          <el-link
+            class="el-icon-user-solid left-icon"
+            @click="leftLink('profile')"
+            type="primary"
+          >个人信息</el-link>
+        </div>
+      </el-col>
+      <el-col :span="12" class="center-containner border">
+        <router-view></router-view>
+      </el-col>
+      <el-col :span="7" class="right-containner border">
+        <rightview />
+      </el-col>
+    </el-row>
   </div>
 </template>
-
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import RightView from '@/components/RightView.vue'
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    rightview: RightView
+  },
+  render: h => h(RightView),
+  data: () => {
+    return {
+      input: ''
+    }
+  },
+  methods: {
+    leftLink: function (params) {
+      alert(params)
+    }
   }
 }
 </script>
 
-<style>
+<style scoped>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+}
+
+.border {
+  border-style: solid;
+  border-color: gray;
+  border-width: 1px;
+}
+
+.left-containner {
+  background-color: rgb(21, 32, 43);
+  height: 1000px;
+  padding: 20px;
+}
+.center-containner {
+  background-color: rgb(21, 32, 43);
+  height: 1000px;
+}
+.right-containner {
+  background-color: rgb(21, 32, 43);
+  height: 1000px;
+}
+
+.logo {
+  color: white;
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 15px;
+}
+
+.search-input {
+  margin-bottom: 20px;
+}
+
+.left-icon {
+  margin-bottom: 30px;
+  color: white;
+  font-size: 1.5rem;
+  display: block;
 }
 </style>
