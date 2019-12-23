@@ -1,8 +1,9 @@
 <template>
   <div class="right-notification">
     <i class="el-icon-message-solid left-icon">通知</i>
-    <hr class="hr-border" />
-    <div class="notification-content">nothing now...</div>
+    <div class="notification-content border">
+      <div>Hello Wellcome!</div>
+    </div>
   </div>
 </template>
 
