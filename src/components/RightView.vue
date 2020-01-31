@@ -2,13 +2,13 @@
   <div>
     <div class="right-notification">
       <i class="el-icon-message-solid left-icon">通知</i>
-      <div class="notification-content border">
+      <div class="notification-content component-border">
         <div>Hello Wellcome!</div>
       </div>
     </div>
     <div class="right-notification">
       <i class="el-icon-data-line left-icon">热门标签</i>
-      <div class="notification-content border">
+      <div class="notification-content component-border">
         <div>
           <el-row>
             <el-col :span="21">
@@ -33,12 +33,10 @@ export default {
 <style scoped>
 .left-icon {
   margin: 12px;
-  color: white;
   font-size: 1rem;
 }
 
 .notification-content {
   padding: 20px;
-  color: white;
 }
 </style>

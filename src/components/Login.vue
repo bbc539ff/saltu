@@ -46,13 +46,21 @@ export default {
     }
   },
   methods: {
-    submitForm: async function () {
-      const data = await this.axios.post('http://127.0.0.1:9001/login', {
-        memberName: 'a',
-        memberPassword: '1',
-        rememberMe: 'true'
+    submitForm: function () {
+      var that = this
+      this.axios.post('http://127.0.0.1:9101/login', {
+        memberName: that.formData.username,
+        memberPassword: that.formData.password,
+        rememberMe: that.formData.rememberMe
       })
-      console.log(data)
+        .then(function (response) {
+          console.log(response.headers)
+          that.axios.defaults.headers.common['token'] = response.headers['token']
+          that.$router.push({ path: '/home' })
+        })
+        .catch(function (error) {
+          console.info(error)
+        })
     },
     resetForm: function () {
       this.formData['username'] = ''

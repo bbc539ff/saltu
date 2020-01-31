@@ -5,6 +5,7 @@ import './plugins/element.js'
 import '@/assets/css/global.css'
 import axios from 'axios'
 
+// axios.defaults.headers.common['ss'] = 's'
 Vue.prototype.axios = axios
 
 Vue.config.productionTip = false
