@@ -1,0 +1,30 @@
+{
+  "id": "1626281",
+  "name": "saltu",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "3961156",
+      "name": "love [#1488]",
+      "font_class": "love",
+      "unicode": "e649",
+      "unicode_decimal": 58953
+    },
+    {
+      "icon_id": "1210788",
+      "name": "love",
+      "font_class": "love1",
+      "unicode": "e60d",
+      "unicode_decimal": 58893
+    },
+    {
+      "icon_id": "7056462",
+      "name": "转发-空",
+      "font_class": "forward-null",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    }
+  ]
+}

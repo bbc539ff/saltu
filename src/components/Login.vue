@@ -48,7 +48,7 @@ export default {
   methods: {
     submitForm: function () {
       var that = this
-      this.axios.post('http://127.0.0.1:9101/login', {
+      this.axios.post(this.$addr.user + '/login', {
         memberName: that.formData.username,
         memberPassword: that.formData.password,
         rememberMe: that.formData.rememberMe
@@ -56,6 +56,10 @@ export default {
         .then(function (response) {
           console.log(response.headers)
           that.axios.defaults.headers.common['token'] = response.headers['token']
+          that.$cookies.set('userid', response.data.data.memberId)
+          that.$cookies.set('username', response.data.data.memberName)
+          that.$cookies.set('memberPic', response.data.data.memberPic)
+          that.$cookies.set('token', response.headers['token'])
           that.$router.push({ path: '/home' })
         })
         .catch(function (error) {

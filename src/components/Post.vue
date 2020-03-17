@@ -1,26 +1,50 @@
 <template>
   <div id="app-home">
-    <div class="home-header component-border">
-      <i class="el-icon-s-home left-icon">主页</i>
-    </div>
-    <div class="home-send component-border">
+    <div class="home-send-padding component-border">
       <el-row>
+        <!-- Avator. -->
         <el-col :span="3">
-          <el-avatar size="large" :src="circleUrl"></el-avatar>
+          <el-avatar size="large" :src="memberPic"></el-avatar>
         </el-col>
+        <!-- Textarea. -->
         <el-col :span="21">
-          <el-input class="send-textarea" type="textarea" :rows="3" placeholder="请输入内容"></el-input>
-          <el-row class="send-option">
-            <el-col :span="2">
-              <i class="el-icon-picture left-icon"></i>
-            </el-col>
-            <el-col :span="2">
-              <span>{{ textCount }}</span>
-            </el-col>
-            <el-col :span="5">
-              <el-button type="primary" round>主要按钮</el-button>
-            </el-col>
-          </el-row>
+          <el-form ref="form" :model="formData">
+            <el-input
+              class="send-textarea textarea-border"
+              type="textarea"
+              :rows="3"
+              placeholder="发生了什么？"
+              :autosize="{ minRows: 3 }"
+              v-model="formData.postContent"
+            ></el-input>
+            <!-- Upload picture. -->
+            <el-upload
+              ref="upload"
+              :class="{displaynone: displayPicButton}"
+              action="http://127.0.0.1:9102/post/upload"
+              :headers="token"
+              list-type="picture-card"
+              :on-preview="handlePictureCardPreview"
+              :on-remove="handleRemove"
+              :limit="9"
+              :before-upload="picNumInc"
+              :on-change="hideButton"
+              :on-success="remainNumDec"
+              :disabled="displayPicButton"
+              :auto-upload="false"
+              :data="uploadData"
+            >
+              <i class="el-icon-picture"></i>
+            </el-upload>
+            <el-dialog :visible.sync="dialogVisible">
+              <img width="100%" :src="dialogImageUrl" alt />
+            </el-dialog>
+            <div style="float: right;">
+              <!-- Post button. -->
+              <span class="send-option" :style="{ color: fontcolor }">{{ textCount }}</span>
+              <el-button class="send-option" type="primary" round @click="sendPost()">发布！</el-button>
+            </div>
+          </el-form>
         </el-col>
       </el-row>
     </div>
@@ -29,36 +53,108 @@
 
 <script>
 export default {
+  mounted: function () {
+    this.formData.memberId = this.$cookies.get('userid')
+    this.memberPic = this.$cookies.get('memberPic')
+    this.token = {
+      'token': this.$cookies.get('token')
+    }
+  },
   data: () => {
     return {
-      circleUrl: require('@/assets/logo.png'),
-      textCount: 0
+      formData: {
+        memberId: '',
+        postContent: '',
+        postPic1: '',
+        postPic2: '',
+        postPic3: '',
+        postPic4: '',
+        postPic5: '',
+        postPic6: '',
+        postPic7: '',
+        postPic8: '',
+        postPic9: ''
+      },
+      memberPic: '',
+      token: {},
+      dialogImageUrl: '',
+      dialogVisible: false,
+      displayPicButton: false,
+      fileNum: 0,
+      remainNum: 0,
+      uploadData: {
+        'postId': '',
+        'picNum': 0
+      }
+    }
+  },
+  computed: {
+    textCount: function () {
+      var len = this.formData.postContent.length
+      return len
+    },
+    // textCount color
+    fontcolor: function () {
+      if (this.textCount > 400) return 'red'
+      else return 'black'
+    }
+  },
+  methods: {
+    sendPost: function () {
+      for (var i = 1; i <= this.fileNum; i++) {
+        this.formData['postPic' + i] = i + '.jpg'
+      }
+      this.remainNum = this.fileNum
+      var that = this
+      this.axios.post(this.$addr.post + '/post', this.formData)
+        .then(function (response) {
+          that.uploadData['postId'] = response.data.data['postId']
+          console.log('that.uploadData[postId]' + that.uploadData['postId'])
+          if (that.uploadData['postId'] === '') return
+          that.$refs.upload.submit()
+        })
+      this.eventBus.$emit('updatepost')
+    },
+    handleRemove: function (file, fileList) {
+      console.log(file, fileList)
+    },
+    handlePictureCardPreview: function (file) {
+      this.dialogImageUrl = file.url
+      this.dialogVisible = true
+      console.log(this.dialogImageUrl)
+    },
+    hideButton: function () {
+      this.fileNum++
+      console.log(this.fileNum)
+      if (this.fileNum === 9) this.displayPicButton = true
+    },
+    picNumInc: function () {
+      this.uploadData['picNum']++
+      console.log('picNum:' + this.uploadData['picNum'])
+    },
+    remainNumDec: function () {
+      this.remainNum--
+      console.log('this.remainNum:' + this.remainNum)
+      if (this.remainNum === 0) window.location.reload()
     }
   }
 }
 </script>
 
 <style scoped>
-.hr-border {
-  margin: 0;
-}
-.home-header {
-}
-.home-send {
+.home-send-padding {
   padding: 12px;
 }
 .send-textarea {
-  margin-bottom: 12px;
+  padding-bottom: 12px;
+}
+.textarea-border >>> textarea {
+  border: 0;
 }
 .send-option {
-  display: -webkit-flex;
-  display: flex;
-  -webkit-align-items: center;
-  align-items: center;
-  justify-content: flex-end;
+  padding-right: 12px;
 }
-.left-icon {
-  margin: 12px;
-  font-size: 1rem;
+.displaynone >>> div {
+  display: none;
 }
 </style>

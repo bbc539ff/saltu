@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { Button, Form, FormItem, Input, Checkbox, Row, Col, Icon, Link, Avatar } from 'element-ui'
+import { Button, Form, FormItem, Input, Checkbox, Row, Col, Icon, Link, Avatar, Dialog, Upload, Image, Dropdown, DropdownMenu, DropdownItem, Tabs, TabPane } from 'element-ui'
 
 Vue.use(Button)
 Vue.use(Form)
@@ -11,3 +11,11 @@ Vue.use(Col)
 Vue.use(Icon)
 Vue.use(Link)
 Vue.use(Avatar)
+Vue.use(Dialog)
+Vue.use(Upload)
+Vue.use(Image)
+Vue.use(Dropdown)
+Vue.use(DropdownMenu)
+Vue.use(DropdownItem)
+Vue.use(Tabs)
+Vue.use(TabPane)
